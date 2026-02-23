@@ -1,14 +1,17 @@
 const express = require("express");
+const cors = require("cors"); 
+
 const PORT = process.env.PORT || 3000;
 const app = express();
+
+app.use(cors()); 
+app.use(express.json());
 
 const users = [
   { att: "80", Uid: 108233, total_sub: 15, bonus: 23, name: "manan" },
   { att: "80", Uid: 108263, total_sub: 14, bonus: 20, name: "bro" },
   { att: "80", Uid: 108253, total_sub: 14, bonus: 20, name: "aman" },
 ];
-
-app.use(express.json());
 
 app.get("/users", (req, res) => {
   res.status(200).json(users);
@@ -77,12 +80,10 @@ app.patch("/users/:id", (req, res) => {
 
   if (req.body.name !== undefined) user.name = req.body.name;
   if (req.body.att !== undefined) user.att = req.body.att;
-
   if (req.body.bonus !== undefined) user.bonus = req.body.bonus;
   if (req.body.total_sub !== undefined) user.total_sub = req.body.total_sub;
-  console.log("new replaced", users);
 
-  // att: "80",Uid: 108233,total_sub: 15,bonus: 23,name: "manan"
+  console.log("new replaced", users);
 
   res.status(200).json({
     message: "User updated",
@@ -92,13 +93,15 @@ app.patch("/users/:id", (req, res) => {
 
 app.delete("/users/:id", (req, res) => {
   const userID = Number(req.params.id);
-  const index = users.find((u) => u.Uid === userID);
+  const index = users.findIndex((u) => u.Uid === userID);
 
   if (index === -1) {
     return res.status(404).json({ message: "User not found" });
   }
+
   console.log("list of users", users);
   users.splice(index, 1);
+
   res.status(200).json({
     message: "user deleted",
     user: users[index],
