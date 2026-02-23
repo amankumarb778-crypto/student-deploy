@@ -106,5 +106,5 @@ app.delete("/users/:id", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server started on port http://localhost:${port}`);
+  console.log(`Server started on port http://localhost:${PORT}`);
 });
